@@ -1,5 +1,7 @@
 package com.example.projectcalculator.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,6 +11,7 @@ public class SubProject {
     private Long id;
     private String name;
     private String description;
+
     private LocalDate deadline;
 
     private List<Task> tasks;

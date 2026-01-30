@@ -29,6 +29,7 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Description</th>
         <th>Deadline</th>
         <th>Actions</th>
     </tr>
@@ -37,6 +38,7 @@
     <tr th:each="p : ${projects}">
         <td th:text="${p.id}">1</td>
         <td th:text="${p.name}">Name</td>
+        <td th:text="${p.description}">Description</td>
         <td th:text="${p.deadline}">2026-01-01</td>
         <td>
             <a th:href="@{|/projects/${p.id}/subprojects|}">Subprojects</a>

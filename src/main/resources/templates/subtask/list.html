@@ -33,6 +33,7 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Description</th>
         <th>Deadline</th>
         <th>Est. hours</th>
         <th>Actions</th>
@@ -42,6 +43,7 @@
     <tr th:each="st : ${subtasks}">
         <td th:text="${st.id}">1</td>
         <td th:text="${st.name}">Name</td>
+        <td th:text="${st.description}">Description</td>
         <td th:text="${st.deadline}">2026-01-01</td>
         <td th:text="${st.estimatedHours}">1.5</td>
         <td>
