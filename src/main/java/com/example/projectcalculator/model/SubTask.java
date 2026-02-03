@@ -1,15 +1,27 @@
 package com.example.projectcalculator.model;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 public class SubTask {
 
-    private Long taskId;
     private Long id;
+
+    @NotNull(message = "Task id is required")
+    private Long taskId;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 50, message = "Name must be max 50 characters")
     private String name;
+
+    @Size(max = 200, message = "Description must be max 200 characters")
     private String description;
+
+    @FutureOrPresent(message = "Deadline cannot be in the past")
     private LocalDate deadline;
 
+    @DecimalMin(value = "0.1", message = "Estimated hours must be at least 0.1")
     private Double estimatedHours;
 
     public SubTask() {
@@ -69,9 +81,6 @@ public class SubTask {
     }
 
     public Double getEstimatedHours() {
-        if (estimatedHours == null || estimatedHours <= 0) {
-            return 0.0;
-        }
         return estimatedHours;
     }
 }

@@ -2,8 +2,10 @@ package com.example.projectcalculator.controller;
 
 import com.example.projectcalculator.model.SubTask;
 import com.example.projectcalculator.service.SubTaskService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -50,7 +52,11 @@ public class SubTaskController {
     public String createSubTask(@PathVariable long projectId,
                                 @PathVariable long subProjectId,
                                 @PathVariable long taskId,
-                                @ModelAttribute("subtask") SubTask subtask) {
+                                @Valid @ModelAttribute("subtask") SubTask subtask, BindingResult br) {
+
+        if (br.hasErrors()) {
+            return "subtask/create";
+        }
 
         subtask.setTaskId(taskId);
 
@@ -92,7 +98,10 @@ public class SubTaskController {
                                 @PathVariable long subProjectId,
                                 @PathVariable long taskId,
                                 @PathVariable long id,
-                                @ModelAttribute("subtask") SubTask subtask) {
+                                @Valid @ModelAttribute("subtask") SubTask subtask, BindingResult br) {
+        if (br.hasErrors()) {
+            return "subtask/edit";
+        }
 
         subtask.setId(id);
         subtask.setTaskId(taskId);

@@ -2,8 +2,10 @@ package com.example.projectcalculator.controller;
 import com.example.projectcalculator.model.Project;
 import com.example.projectcalculator.service.ProjectService;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -33,7 +35,12 @@ public class ProjectController {
 
     ///  CREATE A NEW PROJECT AND REDIRECT TO /projects WITH SUCCESS OR ERROR MESSAGE
     @PostMapping("/create")
-    public String createProject(@ModelAttribute("project") Project project) {
+    public String createProject(@Valid @ModelAttribute("project") Project project, BindingResult br) {
+
+        if (br.hasErrors()) {
+            return "project/create";
+        }
+
         boolean created = service.createProject(project);
         if (!created) {
             return "redirect:/projects?error=Could not create project";
@@ -56,8 +63,11 @@ public class ProjectController {
 
     /// UPDATE AN EXISTING PROJECT AND REDIRECT WITH SUCCESS OR ERROR MESSAGE
     @PostMapping("/{id}/edit")
-    public String updateProject(@PathVariable long id,
-                                @ModelAttribute("project") Project project) {
+    public String updateProject(@PathVariable long id, @Valid @ModelAttribute("project") Project project, BindingResult br) {
+
+        if (br.hasErrors()) {
+            return "project/edit";
+        }
 
         project.setId(id); // ensure correct ID (important)
 
@@ -73,6 +83,7 @@ public class ProjectController {
     ///  DELETE A PROJECT BY ID AND REDIRECT TO /projects WITH SUCCESS OR ERROR MESSAGE
     @PostMapping("/{id}/delete")
     public String deleteProject(@PathVariable long id) {
+
         boolean deleted = service.deleteProject(id);
 
         if (!deleted) {

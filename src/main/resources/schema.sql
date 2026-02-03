@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS task (
     name VARCHAR(50) NOT NULL,
     description VARCHAR(200),
     deadline DATE,
-    estimated_hours DOUBLE NOT NULL CHECK (estimated_hours > 0),
     CONSTRAINT fk_task_subproject
                    FOREIGN KEY (subproject_id) REFERENCES subproject(id)
                        ON DELETE CASCADE
