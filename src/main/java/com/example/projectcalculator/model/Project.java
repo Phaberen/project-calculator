@@ -23,6 +23,8 @@ public class Project {
 
     private List<SubProject> subProjects;
 
+    private double totalEstimatedHours;
+
     public Project() {
     }
 
@@ -71,5 +73,13 @@ public class Project {
 
     public void setSubProjects(List<SubProject> subProjects) {
         this.subProjects = subProjects;
+    }
+
+    public double getTotalEstimatedHours() {
+        return totalEstimatedHours;
+    }
+
+    public void setTotalEstimatedHours(double totalEstimatedHours) {
+        this.totalEstimatedHours = totalEstimatedHours;
     }
 }

@@ -19,10 +19,19 @@ public class ProjectController {
         this.service = service;
     }
 
+    /*
     ///  LISTS ALL PROJECTS BY ID AND ADDS THEM TO THE MODEL
     @GetMapping
     public String showProjects(Model model) {
         model.addAttribute("projects", service.getAllProjects());
+        return "project/list";
+    }
+
+     */
+
+    @GetMapping
+    public String showProjects(Model model) {
+        model.addAttribute("projects", service.getAllProjectsWithTotalHours());
         return "project/list";
     }
 

@@ -42,7 +42,7 @@ public class TaskRepository {
     public boolean createTask(Task task) {
         String sql = """
                 INSERT INTO task (subproject_id, name, description, deadline)
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?)
                 """;
 
         int rows = jdbcTemplate.update(
