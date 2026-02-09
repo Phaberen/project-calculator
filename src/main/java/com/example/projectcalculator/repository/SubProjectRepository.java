@@ -19,58 +19,81 @@ public class SubProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /**
-     * Henter alle Subprojekter fra subproject-tabellen.
-     */
-    public List<SubProject> findAllSubProjects() {
+    public List<SubProject> listAllSubProjectsByProjectId(long projectId) {
         String sql = """
-                SELECT id, name, description, deadline, project_id
+                SELECT id, project_id, name, description, deadline
                 FROM subproject
+                WHERE project_id = ?
                 ORDER BY id
                 """;
-
-        return jdbcTemplate.query(sql, new SubProjectRowMapper());
+        return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
     }
 
-    /**
-     * Opretter et nyt SubProject til et givet projekt.
-     */
-    public boolean createSubProject(SubProject subProject, long projectId) {
-        String sql = "INSERT INTO subproject (name, description, deadline, project_id) VALUES (?, ?, ?, ?)";
+    public SubProject findSubProjectById(long projectId,  long id) {
+        String sql = """
+                SELECT id, project_id, name, description, deadline
+                FROM subproject
+                WHERE id = ? AND project_id = ?
+                """;
+        List<SubProject> results = jdbcTemplate.query(sql, new SubProjectRowMapper(), id, projectId);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public boolean createSubProject(SubProject subproject) {
+        String sql = """
+                INSERT INTO subproject (project_id, name, description, deadline)
+                VALUES (?, ?, ?, ?)
+                """;
+
         int rows = jdbcTemplate.update(
                 sql,
-                subProject.getName(),
-                subProject.getDescription(),
-                subProject.getDeadline(),
-                projectId
+                subproject.getProjectId(),
+                subproject.getName(),
+                subproject.getDescription(),
+                subproject.getDeadline()
         );
+
         return rows > 0;
     }
 
-    /**
-     * Sletter et SubProject efter id.
-     */
-    public boolean delete(long id) {
-        String sql = "DELETE FROM subproject WHERE id = ?";
-        int rows = jdbcTemplate.update(sql, id);
+    public boolean updateSubProject(SubProject subproject) {
+        String sql = """
+                UPDATE subproject
+                SET name = ?, description = ?, deadline = ?
+                WHERE id = ? AND project_id = ?
+                """;
+
+        int rows = jdbcTemplate.update(
+                sql,
+                subproject.getName(),
+                subproject.getDescription(),
+                subproject.getDeadline(),
+                subproject.getId(),
+                subproject.getProjectId()
+        );
+
         return rows > 0;
     }
 
-    /**
-     * Mapper én række fra subproject-tabellen til et SubProject-objekt.
-     * Tasks sættes til null her; kan indlæses separat hvis nødvendigt.
-     */
+    public boolean deleteSubProject(long projectId, long id) {
+        String sql = "DELETE FROM subproject WHERE id = ? AND project_id = ?";
+        int rows = jdbcTemplate.update(sql, id, projectId);
+        return rows > 0;
+    }
+
     private static class SubProjectRowMapper implements RowMapper<SubProject> {
         @Override
         public SubProject mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Long id = rs.getLong("id");
-            String name = rs.getString("name");
-            String description = rs.getString("description");
+            SubProject subproject = new SubProject();
+            subproject.setId(rs.getLong("id"));
+            subproject.setProjectId(rs.getLong("project_id"));
+            subproject.setName(rs.getString("name"));
+            subproject.setDescription(rs.getString("description"));
             LocalDate deadline = rs.getDate("deadline") != null
                     ? rs.getDate("deadline").toLocalDate()
                     : null;
-
-            return new SubProject(id, name, description, deadline, null);
+            subproject.setDeadline(deadline);
+            return subproject;
         }
     }
 }

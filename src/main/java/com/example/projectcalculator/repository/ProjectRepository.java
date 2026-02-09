@@ -13,33 +13,14 @@ import java.util.List;
 @Repository
 public class ProjectRepository {
 
+    ///  DEPENDENCY INJECTION OF JDBCTEMPLATE
     private final JdbcTemplate jdbcTemplate;
 
     public ProjectRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-    public boolean create(Project project) {
-        String sql = """
-                            
-                INSERT INTO project (name, description, deadline)
-                            VALUES (?, ?, ?)
-            """;
-
-        int rows = jdbcTemplate.update(
-                sql,
-                project.getName(),
-                project.getDescription(),
-                project.getDeadline()
-        );
-
-        return rows > 0;
-    }
-
-    /**
-     * Henter alle projekter fra project-tabellen.
-     */
-    public List<Project> findAllProjects() {
+    ///  LISTS ALL EXISTING PROJECTS ORDERED BY ID
+    public List<Project> listAllProjects() {
         String sql = """
                 SELECT id, name, description, deadline
                 FROM project
@@ -47,7 +28,19 @@ public class ProjectRepository {
                 """;
         return jdbcTemplate.query(sql, new ProjectRowMapper());
     }
+    ///  FETCHES A PROJECT BY ID
+    public Project findProjectById(long id) {
+        String sql = """
+        SELECT id, name, description, deadline
+        FROM project
+        WHERE id = ?
+        """;
+        /// Execute query; return the project if found, otherwise return null
+        List<Project> results = jdbcTemplate.query(sql, new ProjectRowMapper(), id);
+        return results.isEmpty() ? null : results.get(0);
+    }
 
+    ///  CREATE A NEW PROJECT
     public boolean createProject(Project project) {
         String sql = "INSERT INTO project (name, description, deadline) VALUES (?, ?, ?)";
         int rows = jdbcTemplate.update(
@@ -59,12 +52,30 @@ public class ProjectRepository {
         return rows > 0;
     }
 
+    ///  UPDATE A PROJECT BY ID
+    public boolean updateProject(Project project) {
+        String sql = """
+            UPDATE project
+            SET name = ?, description = ?, deadline = ?
+            WHERE id = ?
+            """;
+        int rows = jdbcTemplate.update(
+                sql,
+                project.getName(),
+                project.getDescription(),
+                project.getDeadline(),
+                project.getId()
+        );
+        return rows > 0;
+    }
+    ///  DELETE A PROJECT BY ID
     public boolean deleteProject(long id) {
         String sql = "DELETE FROM project WHERE id = ?";
         int rows = jdbcTemplate.update(sql, id);
         return rows > 0;
     }
 
+    /// ROWMAPPER CLASS CONVERTS DATABASE ROWS INTO PROJECT OBJECTS
     private static class ProjectRowMapper implements RowMapper<Project> {
         @Override
         public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -78,19 +89,16 @@ public class ProjectRepository {
         }
     }
 
-  public boolean delete(long id) {
-        String sql = "DELETE FROM project WHERE id = ?";
-        int rows = jdbcTemplate.update(sql, id);
-        return rows > 0;
+    public double getTotalEstimatedHoursForProject(long projectId) {
+        String sql = """
+        SELECT COALESCE(SUM(st.estimated_hours), 0)
+        FROM subtask st
+        JOIN task t ON t.id = st.task_id
+        JOIN subproject sp ON sp.id = t.subproject_id
+        WHERE sp.project_id = ?
+        """;
+
+        Double result = jdbcTemplate.queryForObject(sql, Double.class, projectId);
+        return result == null ? 0.0 : result;
     }
 }
-
-
-/*
- rows = antal rækker påvirket af SQL-operationen.
- rows > 0  → en række blev slettet/opdateret
- rows == 0 → ingen rækker matchede betingelsen (fx ID findes ikke).
-
- Returner ikke rows > 0? boolean = false
-*/
-

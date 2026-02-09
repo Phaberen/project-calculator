@@ -1,36 +1,48 @@
 package com.example.projectcalculator.service;
 
-import com.example.projectcalculator.dto.ProjectDto;
 import com.example.projectcalculator.model.Project;
 import com.example.projectcalculator.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class ProjectService {
-    private final ProjectRepository repository;
 
-    public ProjectService(ProjectRepository repository) {
-        this.repository = repository;
+    private final ProjectRepository projectRepository;
+
+    public ProjectService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
     }
 
-    /**
-     * Service-metoden som controlleren kalder.
-     */
     public List<Project> getAllProjects() {
-        return repository.findAllProjects();
+        return projectRepository.listAllProjects();
     }
 
-    public boolean create(ProjectDto dto) {
-        Project p = new Project();
-        p.setName(dto.getName());
-        p.setDescription(dto.getDescription());
-        p.setDeadline(dto.getDeadline());
-        return repository.create(p);
+    public Project getProjectById(long id) {
+        return projectRepository.findProjectById(id);
     }
 
-  public boolean delete(long id) {
-        return repository.delete(id);
+    public boolean createProject(Project project) {
+        return projectRepository.createProject(project);
+    }
+
+    public boolean updateProject(Project project) {
+        return projectRepository.updateProject(project);
+    }
+
+    public boolean deleteProject(long id) {
+        return projectRepository.deleteProject(id);
+    }
+
+    public List<Project> getAllProjectsWithTotalHours() {
+        List<Project> projects = projectRepository.listAllProjects();
+
+        for (Project p : projects) {
+            double total = projectRepository.getTotalEstimatedHoursForProject(p.getId());
+            p.setTotalEstimatedHours(total);
+        }
+
+        return projects;
     }
 }
-

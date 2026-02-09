@@ -1,19 +1,29 @@
 package com.example.projectcalculator.model;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class Project {
 
     private Long id;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 50, message = "Name must be max 50 characters")
     private String name;
+
+    @Size(max = 200, message = "Description must be max 200 characters")
     private String description;
+
+    @FutureOrPresent(message = "Deadline cannot be in the past")
     private LocalDate deadline;
 
-    // placeholder for at omgå thymeleaf errors til
-    public Double getTotalEstimatedHours() {
-        return null;
-    }
+    private List<SubProject> subProjects;
+
+    private double totalEstimatedHours;
 
     public Project() {
     }
@@ -55,5 +65,21 @@ public class Project {
 
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+    }
+
+    public List<SubProject> getSubProjects() {
+        return subProjects;
+    }
+
+    public void setSubProjects(List<SubProject> subProjects) {
+        this.subProjects = subProjects;
+    }
+
+    public double getTotalEstimatedHours() {
+        return totalEstimatedHours;
+    }
+
+    public void setTotalEstimatedHours(double totalEstimatedHours) {
+        this.totalEstimatedHours = totalEstimatedHours;
     }
 }
