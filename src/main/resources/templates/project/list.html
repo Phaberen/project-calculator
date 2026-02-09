@@ -31,6 +31,7 @@
         <th>Name</th>
         <th>Description</th>
         <th>Deadline</th>
+        <th>Total hours</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -40,6 +41,7 @@
         <td th:text="${p.name}">Name</td>
         <td th:text="${p.description}">Description</td>
         <td th:text="${p.deadline}">2026-01-01</td>
+        <td th:text="${p.totalEstimatedHours}">0</td>
         <td>
             <a th:href="@{|/projects/${p.id}/subprojects|}">Subprojects</a>
             |

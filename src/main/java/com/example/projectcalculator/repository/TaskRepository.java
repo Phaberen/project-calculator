@@ -21,7 +21,7 @@ public class TaskRepository {
 
     public List<Task> listAllTasksBySubProjectId(long subProjectId) {
         String sql = """
-                SELECT id, subproject_id, name, description, deadline, estimated_hours
+                SELECT id, subproject_id, name, description, deadline
                 FROM task
                 WHERE subproject_id = ?
                 ORDER BY id
@@ -31,7 +31,7 @@ public class TaskRepository {
 
     public Task findTaskById(long subProjectId, long id) {
         String sql = """
-                SELECT id, subproject_id, name, description, deadline, estimated_hours
+                SELECT id, subproject_id, name, description, deadline
                 FROM task
                 WHERE id = ? AND subproject_id = ?
                 """;
@@ -41,8 +41,8 @@ public class TaskRepository {
 
     public boolean createTask(Task task) {
         String sql = """
-                INSERT INTO task (subproject_id, name, description, deadline, estimated_hours)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO task (subproject_id, name, description, deadline)
+                VALUES (?, ?, ?, ?)
                 """;
 
         int rows = jdbcTemplate.update(
@@ -50,8 +50,7 @@ public class TaskRepository {
                 task.getSubProjectId(),
                 task.getName(),
                 task.getDescription(),
-                task.getDeadline(),
-                task.getEstimatedHours()
+                task.getDeadline()
         );
 
         return rows > 0;
@@ -60,7 +59,7 @@ public class TaskRepository {
     public boolean updateTask(Task task) {
         String sql = """
                 UPDATE task
-                SET name = ?, description = ?, deadline = ?, estimated_hours = ?
+                SET name = ?, description = ?, deadline = ?
                 WHERE id = ? AND subproject_id = ?
                 """;
 
@@ -69,7 +68,6 @@ public class TaskRepository {
                 task.getName(),
                 task.getDescription(),
                 task.getDeadline(),
-                task.getEstimatedHours(),
                 task.getId(),
                 task.getSubProjectId()
         );
@@ -97,7 +95,6 @@ public class TaskRepository {
                     : null;
             task.setDeadline(deadline);
 
-            task.setEstimatedHours(rs.getDouble("estimated_hours"));
             return task;
         }
     }

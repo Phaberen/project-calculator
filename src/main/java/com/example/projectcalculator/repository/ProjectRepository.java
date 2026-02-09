@@ -88,4 +88,17 @@ public class ProjectRepository {
             return new Project(id, name, description, deadline);
         }
     }
+
+    public double getTotalEstimatedHoursForProject(long projectId) {
+        String sql = """
+        SELECT COALESCE(SUM(st.estimated_hours), 0)
+        FROM subtask st
+        JOIN task t ON t.id = st.task_id
+        JOIN subproject sp ON sp.id = t.subproject_id
+        WHERE sp.project_id = ?
+        """;
+
+        Double result = jdbcTemplate.queryForObject(sql, Double.class, projectId);
+        return result == null ? 0.0 : result;
+    }
 }

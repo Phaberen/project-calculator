@@ -12,6 +12,13 @@
       method="post"
       th:object="${project}">
 
+  <div th:if="${#fields.hasErrors('*')}">
+    <ul>
+      <li th:each="err : ${#fields.errors('*')}"
+          th:text="${err}">Error</li>
+    </ul>
+  </div>
+
   <div>
     <label>ID</label>
     <span th:text="${project.id}">1</span>

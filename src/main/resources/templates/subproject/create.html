@@ -12,6 +12,13 @@
       method="post"
       th:object="${subproject}">
 
+  <div th:if="${#fields.hasErrors('*')}">
+    <ul>
+      <li th:each="err : ${#fields.errors('*')}"
+          th:text="${err}">Error</li>
+    </ul>
+  </div>
+
   <div>
     <label for="name">Name</label>
     <input id="name" type="text" th:field="*{name}" required>

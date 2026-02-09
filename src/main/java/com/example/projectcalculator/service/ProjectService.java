@@ -34,4 +34,15 @@ public class ProjectService {
     public boolean deleteProject(long id) {
         return projectRepository.deleteProject(id);
     }
+
+    public List<Project> getAllProjectsWithTotalHours() {
+        List<Project> projects = projectRepository.listAllProjects();
+
+        for (Project p : projects) {
+            double total = projectRepository.getTotalEstimatedHoursForProject(p.getId());
+            p.setTotalEstimatedHours(total);
+        }
+
+        return projects;
+    }
 }

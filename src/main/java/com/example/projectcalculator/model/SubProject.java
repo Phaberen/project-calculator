@@ -1,17 +1,29 @@
 package com.example.projectcalculator.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class SubProject {
 
-    private Long projectId;
+
     private Long id;
+
+    @NotNull(message = "Project id is required")
+    private Long projectId;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 50, message = "Name must be max 50 characters")
     private String name;
+
+    @Size(max = 200, message = "Description must be max 200 characters")
     private String description;
 
+    @FutureOrPresent(message = "Deadline cannot be in the past")
     private LocalDate deadline;
 
     private List<Task> tasks;
@@ -73,18 +85,5 @@ public class SubProject {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
-    }
-
-    public double getEstimatedHours() {
-        if (tasks == null || tasks.isEmpty()) {
-            return 0.0;
-        }
-
-        double total = 0.0;
-        for (Task task : tasks) {
-            total += task.getEstimatedHours();
-        }
-
-        return total;
     }
 }

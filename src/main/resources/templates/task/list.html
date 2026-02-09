@@ -35,7 +35,6 @@
         <th>Name</th>
         <th>Description</th>
         <th>Deadline</th>
-        <th>Est. hours</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -45,7 +44,6 @@
         <td th:text="${t.name}">Name</td>
         <td th:text="${t.description}">Description</td>
         <td th:text="${t.deadline}">2026-01-01</td>
-        <td th:text="${t.estimatedHours}">1.5</td>
         <td>
             <a th:href="@{|/projects/${projectId}/subprojects/${subProjectId}/tasks/${t.id}/subtasks|}">Subtasks</a>
             |

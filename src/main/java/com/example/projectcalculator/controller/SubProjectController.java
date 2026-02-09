@@ -3,8 +3,10 @@ package com.example.projectcalculator.controller;
 import com.example.projectcalculator.service.SubProjectService;
 import com.example.projectcalculator.model.SubProject;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -41,7 +43,10 @@ public class SubProjectController {
     ///  CREATE A NEW SUBPROJECT AND REDIRECT BACK TO THIS PROJECT'S SUBPROJECTS
     @PostMapping("/create")
     public String createSubproject(@PathVariable long projectId,
-                                   @ModelAttribute("subproject") SubProject subproject) {
+                                   @Valid @ModelAttribute("subproject") SubProject subproject, BindingResult br) {
+        if (br.hasErrors()) {
+            return "subproject/create";
+        }
 
         subproject.setProjectId(projectId); // enforce correct FK (important)
 
@@ -76,7 +81,11 @@ public class SubProjectController {
     @PostMapping("/{id}/edit")
     public String updateSubproject(@PathVariable long projectId,
                                    @PathVariable long id,
-                                   @ModelAttribute("subproject") SubProject subproject) {
+                                   @Valid @ModelAttribute("subproject") SubProject subproject, BindingResult br) {
+
+        if (br.hasErrors()) {
+            return "subproject/edit";
+        }
 
         subproject.setId(id);              // ensure correct ID (important)
         subproject.setProjectId(projectId); // enforce correct FK (important)

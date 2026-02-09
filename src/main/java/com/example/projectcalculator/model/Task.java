@@ -1,30 +1,42 @@
 package com.example.projectcalculator.model;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class Task {
 
-    private Long subProjectId;
-    private Long id;
-    private String name;
-    private String description;
-    private LocalDate deadline;
 
-    private Double estimatedHours;
+    private Long id;
+
+    @NotNull(message = "Subproject id is required")
+    private Long subProjectId;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 50, message = "Name must be max 50 characters")
+    private String name;
+
+    @Size(max = 200, message = "Description must be max 200 characters")
+    private String description;
+
+    @FutureOrPresent(message = "Deadline cannot be in the past")
+    private LocalDate deadline;
 
     private List<SubTask> subTasks;
 
     public Task() {
     }
 
-    public Task(Long subProjectId, Long id, String name, String description, LocalDate deadline, Double estimatedHours) {
+    public Task(Long subProjectId, Long id, String name, String description, LocalDate deadline) {
         this.subProjectId = subProjectId;
         this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
-        this.estimatedHours = estimatedHours;
     }
 
     public Long getSubProjectId() {
@@ -67,36 +79,11 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public Double getStoredEstimatedHours() {
-        return estimatedHours;
-    }
-
-    public void setEstimatedHours(Double estimatedHours) {
-        this.estimatedHours = estimatedHours;
-    }
-
     public List<SubTask> getSubTasks() {
         return subTasks;
     }
 
     public void setSubTasks(List<SubTask> subTasks) {
         this.subTasks = subTasks;
-    }
-
-    // if subtasks exist, sum their estimated hours; otherwise return task stored estimated hours
-    public double getEstimatedHours() {
-        if (subTasks == null || subTasks.isEmpty()) {
-            if (estimatedHours == null || estimatedHours <= 0) {
-                return 0.0;
-            }
-            return estimatedHours;
-        }
-
-        double total = 0.0;
-        for (SubTask subTask : subTasks) {
-            total += subTask.getEstimatedHours();
-        }
-
-        return total;
     }
 }
