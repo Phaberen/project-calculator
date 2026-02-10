@@ -6,6 +6,7 @@ on:
     branches:
       - main # The 'main' branch
       - dev # The 'dev' branch
+      - Workflows # The 'Workflows' branch
 
 jobs:
   qodana:

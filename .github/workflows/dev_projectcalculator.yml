@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - dev
+      - Workflows
   workflow_dispatch:
 
 jobs:
