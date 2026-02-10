@@ -6,8 +6,7 @@ name: Build and deploy JAR app to Azure Web App - ProjectCalculator
 on:
   push:
     branches:
-      - dev
-      - Workflows
+      - main
   workflow_dispatch:
 
 jobs:
@@ -59,7 +58,6 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F611FB8F4A4A4D4E9A90B1188AA3AE10 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_BB5E5001AB7E483D9E9AA3239FCD3BB7 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C74CC40359B949A3B7DD3FF83790F02A }}
-          client-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET_F611FB8F4A4A4D4E9A90B1188AA3AE10 }}
 
 
       - name: Deploy to Azure Web App
