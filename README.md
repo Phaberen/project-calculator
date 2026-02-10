@@ -1,3 +1,6 @@
+*ISSUES MERGING INTO MAIN, OUR PROJECT "MAIN" IS IN DEV!!!!*
+
+
 # 📊 Project Calculator
 
 A simple project estimation tool developed as a 2nd semester exam project for **Alpha Solutions**.  
