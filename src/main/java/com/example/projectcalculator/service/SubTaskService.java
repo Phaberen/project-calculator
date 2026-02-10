@@ -1,6 +1,7 @@
 package com.example.projectcalculator.service;
 
 import com.example.projectcalculator.model.SubTask;
+import com.example.projectcalculator.model.Task;
 import com.example.projectcalculator.repository.SubTaskRepository;
 import org.springframework.stereotype.Service;
 
