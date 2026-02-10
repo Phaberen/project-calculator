@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/projects/{projectId}/subprojects")
 public class SubProjectController {
 
-    ///  DEPENDENCY INJECTION OF THE SUBPROJECT SERVICE
+
     private final SubProjectService service;
 
     public SubProjectController(SubProjectService service) {

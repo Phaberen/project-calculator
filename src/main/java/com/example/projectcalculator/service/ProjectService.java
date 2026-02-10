@@ -14,7 +14,7 @@ public class ProjectService {
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
-
+    ///  functionally replaced by getAllProjectsWithTotalHours for now, but keeping it here in case we want to return projects without the total hours in the future
     public List<Project> getAllProjects() {
         return projectRepository.listAllProjects();
     }

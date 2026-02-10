@@ -88,7 +88,7 @@ public class ProjectRepository {
             return new Project(id, name, description, deadline);
         }
     }
-
+    ///  CALCULATE THE TOTAL ESTIMATED HOURS FOR ALL SUBTASKS IN A PROJECT
     public double getTotalEstimatedHoursForProject(long projectId) {
         String sql = """
         SELECT COALESCE(SUM(st.estimated_hours), 0)
