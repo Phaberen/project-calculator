@@ -19,6 +19,8 @@ public class ProjectController {
         this.service = service;
     }
 
+
+    /// we dont use this because we want to show total hours for each project, so we use getAllProjectsWithTotalHours() instead
     /*
     ///  LISTS ALL PROJECTS BY ID AND ADDS THEM TO THE MODEL
     @GetMapping
