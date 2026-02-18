@@ -6,14 +6,15 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.7</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<!-- fetches the Spring Boot dependencies from maven central -->
+		<relativePath/> <!-- lookup parent from repository and NOT LOCALLY -->
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>project-calculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>project-calculator</name>
 	<description>Project estimation and planning tool for Alpha Solutions</description>
-	<url/>
+	<url/> <!-- URL of the project, e.g., GitHub repository or project homepage -->
 	<licenses>
 		<license/>
 	</licenses>
@@ -34,6 +35,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
